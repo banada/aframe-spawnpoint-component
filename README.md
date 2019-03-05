@@ -11,7 +11,11 @@ For [A-Frame](https://aframe.io).
 
 | Property | Description | Default Value |
 | -------- | ----------- | ------------- |
-|          |             |               |
+| size     | pool size   | 10            |
+| pattern  | random, even| random        |
+| origin   |             | {x: 0, y: 0, z: 0} |
+| radius   |             | 10            |
+| enableY  | Enable random on y-axis | false |
 
 ### Installation
 
@@ -28,7 +32,10 @@ Install and use by directly including the [browser files](dist):
 
 <body>
   <a-scene>
-    <a-entity spawnpoint="foo: bar"></a-entity>
+    <a-entity spawnpoint__enemy="size: 20; radius: 100;"></a-entity>
+    <a-assets>
+        <a-mixin id="enemy" geometry="primitive: box;" material="color: red;"></a-mixin>
+    </a-assets>
   </a-scene>
 </body>
 ```
