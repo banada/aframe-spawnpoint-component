@@ -22,28 +22,70 @@ AFRAME.registerComponent('spawnpoint', {
         pattern: {default: 'random', type: 'string'},
         origin: {default: {x: 0, y: 0, z: 0}, type: 'vec3'},
         radius: {default: 10, type: 'int'},
-        enableY: {default: false, type: 'boolean'}
+        enableY: {default: false, type: 'boolean'},
+        rate: {default: 0, type: 'int'}
     },
     init: function() {
+        // TODO open space in the pool via events
+        let activeEntities = 0;
         // Select a-scene
         const sceneEl = document.querySelector('a-scene');
         // Create a pool
         const pool = `pool__${this.id}`;
         sceneEl.setAttribute(pool, `mixin: ${this.id}; size: ${this.data.size}`);
-        // Spawn all entities in pool
-        for (let i=0; i<this.data.size; i++) {
-            // Get entity from pool
-            const spawnEntity = sceneEl.components[pool].requestEntity();
-            // Generate a spawn position based on settings
-            const spawnPosition = this.spawnPosition(this.data.pattern,
-                                                this.data.origin,
-                                                this.data.radius,
-                                                this.data.enableY);
-            sceneEl.appendChild(spawnEntity);
-            // Must set attributes after adding to scene
-            // Set position
-            spawnEntity.setAttribute('position', spawnPosition);
+        if (this.data.rate > 0) {
+            // Spawn entities on interval
+            const spawnInterval = setInterval(() => {
+                // Pool full, stop interval
+                if (activeEntities === this.data.size) {
+                    clearInterval(spawnInterval);
+                    return;
+                }
+                this.spawnEntity(sceneEl,
+                            sceneEl.components[pool],
+                            this.data.pattern,
+                            this.data.origin,
+                            this.data.radius,
+                            this.data.enableY);
+                activeEntities++;
+            }, this.data.rate);
+        } else {
+            // Spawn all entities in pool
+            for (let i=0; i<this.data.size; i++) {
+                this.spawnEntity(sceneEl,
+                            sceneEl.components[pool],
+                            this.data.pattern,
+                            this.data.origin,
+                            this.data.radius,
+                            this.data.enableY);
+                activeEntities++;
+            }
         }
+    },
+    /**
+      *  spawnEntity
+      *
+      *  Spawn an entity as a child
+      *
+      *  parentEl: The entity to host the spawned entities
+      *  pool: The A-Frame pool for the spawned entity
+      *  pattern: SPAWN_PATTERN flag
+      *  origin: position vec3. Origin of the spawn pattern
+      *  radius: number. Radius around the origin
+      *  enableY: boolean. Enable random y-axis
+      */
+    spawnEntity: function(parentEl, pool, pattern, origin, radius, enableY) {
+        // Get entity from pool
+        const spawnEntity = pool.requestEntity();
+        // Generate a spawn position based on settings
+        const spawnPosition = this.spawnPosition(pattern,
+                                                 origin,
+                                                 radius,
+                                                 enableY);
+        parentEl.appendChild(spawnEntity);
+        // Must set attributes after adding to scene
+        // Set position
+        spawnEntity.setAttribute('position', spawnPosition);
     },
 
     /**
@@ -59,30 +101,30 @@ AFRAME.registerComponent('spawnpoint', {
       *  Returns a position string where the entity will spawn
       *
       */
-    spawnPosition: function(spawnPattern, spawnOrigin, spawnRadius, enableY) {
+    spawnPosition: function(pattern, origin, radius, enableY) {
         // Use object for easier manipulation
         let pos = {x: 0, y: 0, z: 0};
         // Random positioning
-        if (spawnPattern === SPAWN_PATTERN.RANDOM) {
+        if (pattern === SPAWN_PATTERN.RANDOM) {
             // Random function: Positive or negative direction, within a range, from the origin
             pos.x = (Math.round(Math.random())=== 1 ? 1 : -1)
-                  * (Math.random() * spawnRadius)
-                  + spawnOrigin.x;
+                  * (Math.random() * radius)
+                  + origin.x;
             // Enable y-axis
             if (enableY) {
                 pos.y = (Math.round(Math.random())=== 1 ? 1 : -1)
-                      * (Math.random() * spawnRadius)
-                      + spawnOrigin.y;
+                      * (Math.random() * radius)
+                      + origin.y;
             }
             pos.z = (Math.round(Math.random())=== 1 ? 1 : -1)
-                  * (Math.random() * spawnRadius)
-                  + spawnOrigin.z;
+                  * (Math.random() * radius)
+                  + origin.z;
         // Evenly spaced positioning
-        } else if (this.data.spawnPattern === SPAWN_PATTERN.EVEN) {
+        } else if (this.data.pattern === SPAWN_PATTERN.EVEN) {
             // TODO Evenly spaced within a range
         // Handle bad pattern name
         } else {
-            console.warn('aframe-spawnpoint-component:', `Invalid spawn pattern "${spawnPattern}"`);
+            console.warn('aframe-spawnpoint-component:', `Invalid spawn pattern "${pattern}"`);
         }
         // Return a spawn position
         const result = `${pos.x} ${pos.y} ${pos.z}`;

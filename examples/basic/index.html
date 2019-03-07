@@ -12,12 +12,9 @@
     <a-scene environment="preset: forest"
              spawnpoint__enemy="size: 10;
                                 pattern: random;
-                                radius: 10;
-                                origin: 0 0 0;"
-             spawnpoint__npc="size: 100;
-                              pattern: random;
-                              radius: 100;
-                              origin: 0 0 0;">
+                                radius: 5;
+                                origin: 0 0 -10;
+                                rate: 1000;">
         <a-assets>
             <a-mixin id="enemy" geometry="primitive: box;" material="color: red;"></a-mixin>
             <a-mixin id="npc" geometry="primitive: box;" material="color: blue;"></a-mixin>
