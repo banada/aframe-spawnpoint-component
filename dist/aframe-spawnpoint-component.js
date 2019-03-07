@@ -135,8 +135,16 @@ AFRAME.registerComponent('spawnpoint', {
         }
     },
     /**
-      * spawnEntity
+      *  spawnEntity
       *
+      *  Spawn an entity as a child
+      *
+      *  parentEl: The entity to host the spawned entities
+      *  pool: The A-Frame pool for the spawned entity
+      *  pattern: SPAWN_PATTERN flag
+      *  origin: position vec3. Origin of the spawn pattern
+      *  radius: number. Radius around the origin
+      *  enableY: boolean. Enable random y-axis
       */
     spawnEntity: function(parentEl, pool, pattern, origin, radius, enableY) {
         // Get entity from pool
