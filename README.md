@@ -1,3 +1,5 @@
+![](./assets/spawnpoint.gif)
+
 ## aframe-spawnpoint-component
 
 [![Version](http://img.shields.io/npm/v/aframe-spawnpoint-component.svg?style=flat-square)](https://npmjs.org/package/aframe-spawnpoint-component)
