@@ -18,7 +18,7 @@ For [A-Frame](https://aframe.io).
 | origin   | Origin of the spawn pattern | {x: 0, y: 0, z: 0} |
 | radius   | Radius around the origin | 10 |
 | enableY  | Enable random on y-axis | false |
-| rate     | How often to spawn, in ms. If 0, spawn all at once. | 0 |
+| rate     | How often to spawn, in milliseconds. If 0, spawn all at once. | 0 |
 
 ### Installation
 
