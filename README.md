@@ -3,6 +3,8 @@
 [![Version](http://img.shields.io/npm/v/aframe-spawnpoint-component.svg?style=flat-square)](https://npmjs.org/package/aframe-spawnpoint-component)
 [![License](http://img.shields.io/npm/l/aframe-spawnpoint-component.svg?style=flat-square)](https://npmjs.org/package/aframe-spawnpoint-component)
 
+[DEMO](https://banada.github.io/aframe-spawnpoint-component/)
+
 Spawn A-Frame entities from a point.
 
 For [A-Frame](https://aframe.io).
@@ -11,11 +13,12 @@ For [A-Frame](https://aframe.io).
 
 | Property | Description | Default Value |
 | -------- | ----------- | ------------- |
-| size     | pool size   | 10            |
-| pattern  | random, even| random        |
-| origin   |             | {x: 0, y: 0, z: 0} |
-| radius   |             | 10            |
+| size     | pool size | 10 |
+| pattern  | random, even | random |
+| origin   | Origin of the spawn pattern | {x: 0, y: 0, z: 0} |
+| radius   | Radius around the origin | 10 |
 | enableY  | Enable random on y-axis | false |
+| rate     | How often to spawn, in milliseconds. If 0, spawn all at once. | 0 |
 
 ### Installation
 
