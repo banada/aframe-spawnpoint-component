@@ -85,7 +85,9 @@ AFRAME.registerComponent('spawnpoint', {
         parentEl.appendChild(spawnEntity);
         // Must set attributes after adding to scene
         // Set position
-        spawnEntity.setAttribute('position', spawnPosition);
+        spawnEntity.object3D.position.set(spawnPosition.x,
+                                          spawnPosition.y,
+                                          spawnPosition.z);
     },
 
     /**
@@ -98,7 +100,7 @@ AFRAME.registerComponent('spawnpoint', {
       *  radius: number. Radius around the origin
       *  enableY: boolean. Enable random y-axis
       *
-      *  Returns a position string where the entity will spawn
+      *  Returns a vec3 where the entity will spawn
       *
       */
     spawnPosition: function(pattern, origin, radius, enableY) {
@@ -127,7 +129,6 @@ AFRAME.registerComponent('spawnpoint', {
             console.warn('aframe-spawnpoint-component:', `Invalid spawn pattern "${pattern}"`);
         }
         // Return a spawn position
-        const result = `${pos.x} ${pos.y} ${pos.z}`;
-        return result;
+        return pos;
     }
 });
